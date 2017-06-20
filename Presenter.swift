@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum TNPresenterAnimatorType {
+enum PresenterAnimatorType {
     /// 从哪个方向
     enum Direction {
         
@@ -27,18 +27,18 @@ enum TNPresenterAnimatorType {
     case move(from: Direction)
 }
 
-class TNPresenterAnimator : NSObject {
-
+class PresenterAnimator : NSObject {
+    
     var presentFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     var dummyColor = UIColor.clear
-    var animatorType = TNPresenterAnimatorType.fadeIn
+    var animatorType = PresenterAnimatorType.fadeIn
     var dismissBlock : (()->())?
     
     fileprivate var isPresented : Bool = true // dismiss , present
     
     init(presentFrame:CGRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height),
          dummyColor:UIColor = UIColor.clear,
-         animatorType:TNPresenterAnimatorType = TNPresenterAnimatorType.fadeIn,
+         animatorType:PresenterAnimatorType = PresenterAnimatorType.fadeIn,
          dismiss:@escaping ()->() = {}) {
         
         super.init()
@@ -54,7 +54,7 @@ class TNPresenterAnimator : NSObject {
     }
 }
 
-extension TNPresenterAnimator : UIViewControllerAnimatedTransitioning {
+extension PresenterAnimator : UIViewControllerAnimatedTransitioning {
     
     // 动画时长
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -118,7 +118,7 @@ extension TNPresenterAnimator : UIViewControllerAnimatedTransitioning {
         }
             
             
-        // 消失动画
+            // 消失动画
         else {
             switch animatorType {
             case .fadeIn:
@@ -138,7 +138,7 @@ extension TNPresenterAnimator : UIViewControllerAnimatedTransitioning {
                     transitionContext.completeTransition(finished)
                 })
                 break
-            
+                
             case .open:
                 fromView?.layer.anchorPoint = CGPoint(x: 0.5, y: 0.0)
                 UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
@@ -148,7 +148,7 @@ extension TNPresenterAnimator : UIViewControllerAnimatedTransitioning {
                     transitionContext.completeTransition(finished)
                 })
                 break
-            
+                
             case .downSpread:
                 fromView?.layer.anchorPoint = CGPoint(x: 0.5, y: 0.0)
                 UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
@@ -188,8 +188,8 @@ extension TNPresenterAnimator : UIViewControllerAnimatedTransitioning {
     }
 }
 
-extension TNPresenterAnimator : UIViewControllerTransitioningDelegate {
-
+extension PresenterAnimator : UIViewControllerTransitioningDelegate {
+    
     // 弹出动画
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         isPresented = true
@@ -203,17 +203,16 @@ extension TNPresenterAnimator : UIViewControllerTransitioningDelegate {
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let presentationVc = TNPresentationController(presentedViewController: presented, presenting: presenting)
+        let presentationVc = PresentationController(presentedViewController: presented, presenting: presenting)
         presentationVc.dummyColor = self.dummyColor
         presentationVc.presentFrame = self.presentFrame
         presentationVc.dummyViewTapBlock = self.dismissBlock
         
         return presentationVc
     }
-    
 }
 
-class TNPresentationController : UIPresentationController {
+class PresentationController : UIPresentationController {
     
     var dummyViewTapBlock : (()->())?
     var presentFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)

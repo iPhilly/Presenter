@@ -1,4 +1,4 @@
-# TNPresenter
+# Presenter
 
 An animation kit to present viewController.
 
@@ -10,7 +10,7 @@ An animation kit to present viewController.
 // step 0
 // init animator and retain(if not dismiss bug)
 let rect = CGRect(x: 100, y:200, width: 200, height: 200)
-let animator = TNPresenterAnimator(presentFrame: rect, dummyColor: UIColor.clear, animatorType: .move(from: .bottom))
+let animator = PresenterAnimator(presentFrame: rect, dummyColor: UIColor.clear, animatorType: .move(from: .bottom))
 self.animator = animator
 
 // step 1
