@@ -8,17 +8,13 @@ An animation kit to present viewController.
 // code in viewController
 
 // step 0
-
-// frame
+// init animator and retain(if not dismiss bug)
 let rect = CGRect(x: 100, y:200, width: 200, height: 200)
-
-// init animator (frame,backColor, animatorType)
 let animator = TNPresenterAnimator(presentFrame: rect, dummyColor: UIColor.clear, animatorType: .move(from: .bottom))
-
-// retain animator(if not dismiss bug)
 self.animator = animator
 
 // step 1
+// create viewController
 let vc = CustomViewController()
 vc.transitioningDelegate = animator
 vc.modalPresentationStyle = .custom
